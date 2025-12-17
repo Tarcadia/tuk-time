@@ -34,6 +34,13 @@ def _get_long_description():
     with open(PATH_README, encoding='utf-8') as f:
         return f.read()
 
+def _get_version():
+    try:
+        from setuptools_scm import get_version
+        return get_version(root=CSD)
+    except ImportError:
+        return pkg.__version__
+
 
 
 setuptools.setup(
@@ -41,7 +48,7 @@ setuptools.setup(
     description=DESCRIPTION,
     long_description=_get_long_description(),
     long_description_content_type="text/markdown",
-    version=pkg.__version__,
+    version=_get_version(),
     license=pkg.__license__,
     author=pkg.__author__,
     author_email="dont@email.me",
@@ -53,6 +60,7 @@ setuptools.setup(
     package_dir={"": PATH_SRC.as_posix()},
     packages=setuptools.find_namespace_packages(where=PATH_SRC.as_posix()),
     python_requires=">=3.11",
+    setup_requires=["setuptools_scm>=6.0"],
     install_requires=_get_requirements(),
     keywords=["time", "datetime", "timestamp", "timezone", "tuk"],
     classifiers=[
